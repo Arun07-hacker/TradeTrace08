@@ -9,7 +9,11 @@ class BaseAgent(ABC):
     """Base class for autonomous specialized trading intelligence agents."""
 
     def __init__(self, llm_provider: Optional[LLMProvider] = None):
-        self.llm = llm_provider or get_llm_provider()
+        self._llm = llm_provider
+
+    @property
+    def llm(self) -> LLMProvider:
+        return self._llm or get_llm_provider()
 
     async def call_llm(self, system_prompt: str, user_content: str, temperature: float = 0.2) -> Dict[str, Any]:
         """Invoke LLM with system instructions and parse JSON payload safely."""

@@ -1,5 +1,5 @@
 import pytest
-from unittest.mock import patch, AsyncMock
+from unittest.mock import patch, MagicMock
 from app.services.llm.base import LLMMessage
 from app.services.llm.mock_provider import MockLLMProvider
 from app.services.llm.openai_provider import OpenAILLMProvider
@@ -44,8 +44,8 @@ async def test_mock_llm_provider_decision():
 @pytest.mark.asyncio
 @patch("httpx.AsyncClient.post")
 async def test_openai_llm_provider(mock_post):
-    mock_response = AsyncMock()
-    mock_response.raise_for_status.return_value = None
+    mock_response = MagicMock()
+    mock_response.raise_for_status = MagicMock()
     mock_response.json.return_value = {
         "choices": [{"message": {"content": '{"status": "ok"}'}}]
     }
@@ -60,8 +60,8 @@ async def test_openai_llm_provider(mock_post):
 @pytest.mark.asyncio
 @patch("httpx.AsyncClient.post")
 async def test_gemini_llm_provider(mock_post):
-    mock_response = AsyncMock()
-    mock_response.raise_for_status.return_value = None
+    mock_response = MagicMock()
+    mock_response.raise_for_status = MagicMock()
     mock_response.json.return_value = {
         "candidates": [{"content": {"parts": [{"text": '{"status": "ok"}'}]}}]
     }
@@ -76,8 +76,8 @@ async def test_gemini_llm_provider(mock_post):
 @pytest.mark.asyncio
 @patch("httpx.AsyncClient.post")
 async def test_anthropic_llm_provider(mock_post):
-    mock_response = AsyncMock()
-    mock_response.raise_for_status.return_value = None
+    mock_response = MagicMock()
+    mock_response.raise_for_status = MagicMock()
     mock_response.json.return_value = {
         "content": [{"type": "text", "text": '{"status": "ok"}'}]
     }
